@@ -1,0 +1,61 @@
+#!/usr/bin/env ruby
+
+require "bundler/setup"
+require "zvv/cli"
+require 'gli'
+require 'transprt'
+require 'ostruct'
+
+module Patches
+	refine String do
+		def strftime
+			DateTime.iso8601(self).strftime('%H:%M')
+		end
+	end
+end
+
+# https://gist.github.com/pmarreck/5349411
+module HashToOpenstruct
+	def to_ostruct
+		o = OpenStruct.new(self)
+		each.with_object(o) do |(k,v), o|
+			o.send(:"#{k}=", v.to_ostruct) if v.respond_to? :to_ostruct
+		end
+		o
+	end
+end
+
+Hash.include HashToOpenstruct
+
+using Patches
+
+include GLI::App
+
+program_desc 'ZVV and Swiss Open Data public transport utility'
+
+version Zvv::Cli::VERSION
+subcommand_option_handling :normal
+
+desc 'Find connection between two destinations'
+arg_name 'from to'
+command :connection do |c|
+	c.desc 'Describe a switch to bar'
+	c.switch :s
+
+	c.desc 'Describe a flag to bar'
+	c.default_value 'default'
+	c.flag :f
+	c.action do |global_options, options, args|
+
+		# Your command logic here
+
+		# If you have any errors, just raise them
+		# raise "that command made no sense"
+
+		connections = Transprt.connections(from: args.first, to: args.last).map(&:to_ostruct)
+		connection = connections.first
+		puts "%s -----> %s" % [connection.from.departure.strftime, connection.to.arrival.strftime]
+	end
+end
+
+exit run(ARGV)
