@@ -5,7 +5,9 @@ require "bundler"
 
 Bundler.require :runtime
 
+require 'zvv/cli'
 require 'ostruct'
+require 'time'
 
 module Patches
 	refine String do
@@ -42,11 +44,8 @@ module Patches
 end
 
 # TODO
-# one command
-# departure & arrival time
 # autocomplete
 # zone info (if not 110)
-#
 
 class App
 	using Patches
@@ -58,13 +57,28 @@ class App
 		program :version, Zvv::Cli::VERSION
 
 		command :connection do |c|
-			c.syntax = 'from to'
+			c.syntax = 'from to [departure|@arrival]'
 			c.description = 'Find connection between two destinations'
 			c.action do |args, options|
-				raise 'Expected two locations' unless args.size == 2
+				time = args[2] || Time.now.to_s
 
-				connections = Transprt.connections(from: args.first, to: args.last).to_ostruct
-				connections.each_with_index do |c, i|
+				isArrivalTime = time.start_with?('@') || time.end_with?('@') ? 1 : 0
+				time = time.gsub('@', '')
+
+				time += ':00' unless time.include? ':'
+				time = Time.parse(time)
+				time += 24 * 60 ** 2 if time < Time.now # Look up tomorrow's connections
+
+
+				connections = Transprt.connections(
+					from: args[0],
+					to: args[1],
+					date: time.strftime('%Y-%m-%d'),
+					time: time.strftime('%H:%M'),
+					isArrivalTime: isArrivalTime
+				)
+
+				connections.to_ostruct.each_with_index do |c, i|
 					puts ("%s %s ---> %s %s" % [c.from.station.name, c.from.departure.strftime, c.to.station.name, c.to.arrival.strftime]).subzh
 					c.sections.each do |s|
 						if s.walk
