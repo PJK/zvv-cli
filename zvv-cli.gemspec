@@ -35,7 +35,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "pry-rescue"
 
 	# TODO fork & update
-	spec.add_dependency "gli"
+	spec.add_dependency "commander"
 	spec.add_dependency "transprt"
 	spec.add_dependency "colorize"
 end

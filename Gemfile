@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 gemspec group: :development
 
 group :runtime do
-	gem 'gli'
+	gem 'commander'
 	gem 'transprt'
 	gem 'colorize'
 end

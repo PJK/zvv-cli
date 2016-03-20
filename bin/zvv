@@ -48,38 +48,42 @@ end
 # zone info (if not 110)
 #
 
-module ZVV
+class App
 	using Patches
-	include GLI::App
+	include Commander::Methods
 
-	program_desc 'ZVV and Swiss Open Data public transport utility'
+	def run
+		program :name, 'ZVV CLI'
+		program :description, 'ZVV and Swiss Open Data public transport utility'
+		program :version, Zvv::Cli::VERSION
 
-	version Zvv::Cli::VERSION
-	subcommand_option_handling :normal
+		command :connection do |c|
+			c.syntax = 'from to'
+			c.description = 'Find connection between two destinations'
+			c.action do |args, options|
+				raise 'Expected two locations' unless args.size == 2
 
-	desc 'Find connection between two destinations'
-	arg_name 'from to'
-	command [:connection, :c] do |c|
-		c.action do |global_options, options, args|
-			raise 'Expected two locations' unless args.size == 2
-
-			connections = Transprt.connections(from: args.first, to: args.last).to_ostruct
-			connections.each_with_index do |c, i|
-				#byebug
-				puts ("%s %s ---> %s %s" % [c.from.station.name, c.from.departure.strftime, c.to.station.name, c.to.arrival.strftime]).subzh
-				c.sections.each do |s|
-					if s.walk
-						puts ("Walk (%s) to %s" % [s.walk.duration, s.departure.station.name]).subzh.light_black
-					else
-						#puts s.inspect
-						puts ("%s %s -- %s --> %s %s" % [s.departure.station.name, s.departure.departure.strftime, s.journey.name.subcon, s.arrival.station.name, s.arrival.arrival.strftime]).subzh.light_black
+				connections = Transprt.connections(from: args.first, to: args.last).to_ostruct
+				connections.each_with_index do |c, i|
+					#byebug
+					puts ("%s %s ---> %s %s" % [c.from.station.name, c.from.departure.strftime, c.to.station.name, c.to.arrival.strftime]).subzh
+					c.sections.each do |s|
+						if s.walk
+							puts ("Walk (%s) to %s" % [s.walk.duration, s.departure.station.name]).subzh.light_black
+						else
+							#puts s.inspect
+							puts ("%s %s -- %s --> %s %s" % [s.departure.station.name, s.departure.departure.strftime, s.journey.name.subcon, s.arrival.station.name, s.arrival.arrival.strftime]).subzh.light_black
+						end
 					end
+					puts unless i == connections.length - 1
 				end
-				puts unless i == connections.length - 1
 			end
 		end
-	end
 
-	default_command :connection
-	exit run(ARGV)
+		alias_command :c, :connection
+
+		run!
+	end
 end
+
+App.new.run
