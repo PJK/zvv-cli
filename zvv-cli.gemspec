@@ -36,4 +36,5 @@ Gem::Specification.new do |spec|
 	spec.add_dependency "gli"
 	# TODO fork & update
 	spec.add_dependency "transprt"
+	spec.add_dependency "colorize"
 end
