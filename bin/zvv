@@ -48,6 +48,13 @@ class Array
 	end
 end
 
+# TODO
+# one command
+# departure & arrival time
+# autocomplete
+# zone info (if not 110)
+#
+
 Hash.include HashToOpenstruct
 
 using Patches
@@ -62,12 +69,6 @@ subcommand_option_handling :normal
 desc 'Find connection between two destinations'
 arg_name 'from to'
 command :connection do |c|
-	c.desc 'Describe a switch to bar'
-	c.switch :s
-
-	c.desc 'Describe a flag to bar'
-	c.default_value 'default'
-	c.flag :f
 	c.action do |global_options, options, args|
 
 		# Your command logic here
@@ -92,4 +93,5 @@ command :connection do |c|
 	end
 end
 
+default_command :connection
 exit run(ARGV)
