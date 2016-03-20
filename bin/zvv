@@ -57,7 +57,7 @@ class App
 		program :version, Zvv::Cli::VERSION
 
 		command :connection do |c|
-			c.syntax = 'from to [departure|@arrival]'
+			c.syntax = 'from to [departure|@arrival|arrival@]'
 			c.description = 'Find connection between two destinations'
 			c.action do |args, options|
 				time = args[2] || Time.now.to_s
