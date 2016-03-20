@@ -28,7 +28,7 @@ module Patches
 		def to_ostruct
 			OpenStruct.new(self).tap do |o|
 				each.with_object(o) do |(k,v), o|
-					o.send(:"#{k}=", v.to_ostruct) if v.respond_to? :to_ostruct
+					o.send(:"#{k}=", v.to_ostruct) rescue nil
 				end
 			end
 		end
@@ -65,13 +65,11 @@ class App
 
 				connections = Transprt.connections(from: args.first, to: args.last).to_ostruct
 				connections.each_with_index do |c, i|
-					#byebug
 					puts ("%s %s ---> %s %s" % [c.from.station.name, c.from.departure.strftime, c.to.station.name, c.to.arrival.strftime]).subzh
 					c.sections.each do |s|
 						if s.walk
 							puts ("Walk (%s) to %s" % [s.walk.duration, s.departure.station.name]).subzh.light_black
 						else
-							#puts s.inspect
 							puts ("%s %s -- %s --> %s %s" % [s.departure.station.name, s.departure.departure.strftime, s.journey.name.subcon, s.arrival.station.name, s.arrival.arrival.strftime]).subzh.light_black
 						end
 					end
