@@ -1,5 +1,7 @@
 # ZVV CLI -- A saner interface for the Swiss public transport network
 
+Who needs a [fancy schmancy webapp](http://www.zvv.ch/zvv/de/home.html) with a 1 MB background image that is not even cached when you can have all the glory in 80 chars?
+
 ## Installation
 
     $ gem install zvv-cli
@@ -8,30 +10,9 @@
 
 Get me from Hongg to Thalwil by 13:00
 
-```
-$ zvv c ETH/honggerber thalwil 13@
-Zh, ETH Hönggerberg 11:53 ---> Thalwil 12:38
-Zh, ETH Hönggerberg 11:53 -- B 69 --> Zh, Bucheggplatz 12:01
-Zh, Bucheggplatz 12:04 -- T 11 --> Zh, Bhfquai/HB 12:14
-Walk (00:07:00) to Zh, Bhfquai/HB
-Zh HB 12:21 -- S 24 --> Thalwil 12:38
+<img width="559" alt="screenshot 2016-03-20 23 39 37" src="https://cloud.githubusercontent.com/assets/271640/13907721/31d5b824-eef5-11e5-9022-77a62198d306.png">
 
-Zh, ETH Hönggerberg 12:04 ---> Thalwil 12:43
-Zh, ETH Hönggerberg 12:04 -- B 37 --> Zh, Zehntenhausplatz 12:09
-Walk (00:04:00) to Zh, Zehntenhausplatz
-Zh Affoltern 12:14 -- S 6 --> Zh HB 12:28
-Zh HB 12:35 -- R 2647 --> Thalwil 12:43
-
-Zh, ETH Hönggerberg 12:09 ---> Thalwil 12:53
-Zh, ETH Hönggerberg 12:09 -- B 80 --> Zh Oerlikon, Bhf Nord 12:19
-Walk (00:06:00) to Zh Oerlikon, Bhf Nord
-Zh Oerlikon 12:30 -- S 8 --> Thalwil 12:53
-
-Zh, ETH Hönggerberg 12:17 ---> Thalwil 13:00
-Zh, ETH Hönggerberg 12:17 -- B 80 --> Zh Oerlikon, Bhf Nord 12:27
-Walk (00:06:00) to Zh Oerlikon, Bhf Nord
-Zh Oerlikon 12:41 -- S 2 --> Thalwil 13:00
-```
+More via `zvv -h`
 
 ## Development
 
@@ -48,3 +29,4 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/[USERN
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
 
+Disclaimer: I wrote this in 2 hours for my self.
