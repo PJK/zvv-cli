@@ -1,28 +1,37 @@
-# Zvv::Cli
-
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/zvv/cli`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+# ZVV CLI -- A saner interface for the Swiss public transport network
 
 ## Installation
-
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'zvv-cli'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
 
     $ gem install zvv-cli
 
 ## Usage
 
-TODO: Write usage instructions here
+Get me from Hongg to Thalwil by 13:00
+
+```
+$ zvv c ETH/honggerber thalwil 13@
+Zh, ETH Hönggerberg 11:53 ---> Thalwil 12:38
+Zh, ETH Hönggerberg 11:53 -- B 69 --> Zh, Bucheggplatz 12:01
+Zh, Bucheggplatz 12:04 -- T 11 --> Zh, Bhfquai/HB 12:14
+Walk (00:07:00) to Zh, Bhfquai/HB
+Zh HB 12:21 -- S 24 --> Thalwil 12:38
+
+Zh, ETH Hönggerberg 12:04 ---> Thalwil 12:43
+Zh, ETH Hönggerberg 12:04 -- B 37 --> Zh, Zehntenhausplatz 12:09
+Walk (00:04:00) to Zh, Zehntenhausplatz
+Zh Affoltern 12:14 -- S 6 --> Zh HB 12:28
+Zh HB 12:35 -- R 2647 --> Thalwil 12:43
+
+Zh, ETH Hönggerberg 12:09 ---> Thalwil 12:53
+Zh, ETH Hönggerberg 12:09 -- B 80 --> Zh Oerlikon, Bhf Nord 12:19
+Walk (00:06:00) to Zh Oerlikon, Bhf Nord
+Zh Oerlikon 12:30 -- S 8 --> Thalwil 12:53
+
+Zh, ETH Hönggerberg 12:17 ---> Thalwil 13:00
+Zh, ETH Hönggerberg 12:17 -- B 80 --> Zh Oerlikon, Bhf Nord 12:27
+Walk (00:06:00) to Zh Oerlikon, Bhf Nord
+Zh Oerlikon 12:41 -- S 2 --> Thalwil 13:00
+```
 
 ## Development
 

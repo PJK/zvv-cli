@@ -1,9 +1,10 @@
 #!/usr/bin/env ruby
 
-require "rubygems"
-require "bundler"
+require 'rubygems'
 
-Bundler.require :runtime
+require 'commander'
+require 'transprt'
+require 'colorize'
 
 require 'zvv/cli'
 require 'ostruct'
