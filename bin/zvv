@@ -17,11 +17,23 @@ end
 # https://gist.github.com/pmarreck/5349411
 module HashToOpenstruct
 	def to_ostruct
-		o = OpenStruct.new(self)
-		each.with_object(o) do |(k,v), o|
-			o.send(:"#{k}=", v.to_ostruct) if v.respond_to? :to_ostruct
+		OpenStruct.new(self).tap do |o|
+			each.with_object(o) do |(k,v), o|
+				o.send(:"#{k}=", v.to_ostruct) if v.is_a?(Hash) || v.is_a?(Array)
+			end
 		end
-		o
+	end
+end
+
+class Array
+	def to_ostruct
+		map { |_|
+			if _.is_a?(Hash) || _.is_a?(Array)
+				_.to_ostruct
+			else
+				_
+			end
+		}
 	end
 end
 
@@ -52,9 +64,16 @@ command :connection do |c|
 		# If you have any errors, just raise them
 		# raise "that command made no sense"
 
-		connections = Transprt.connections(from: args.first, to: args.last).map(&:to_ostruct)
-		connection = connections.first
-		puts "%s -----> %s" % [connection.from.departure.strftime, connection.to.arrival.strftime]
+		connections = Transprt.connections(from: args.first, to: args.last).to_ostruct
+		connections.each do |c|
+			#byebug
+			puts "%s %s ---> %s %s" % [c.from.station.name, c.from.departure.strftime, c.to.station.name, c.to.arrival.strftime]
+			c.sections.each do |s|
+				puts s.journey.name
+				puts s.journey.to
+				puts "%s %s ---> %s %s" % [s.departure.station.name, s.departure.departure.strftime, s.arrival.station.name, s.arrival.arrival.strftime]
+			end
+		end
 	end
 end
 
