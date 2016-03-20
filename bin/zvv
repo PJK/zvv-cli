@@ -68,13 +68,9 @@ subcommand_option_handling :normal
 
 desc 'Find connection between two destinations'
 arg_name 'from to'
-command :connection do |c|
+command [:connection, :c] do |c|
 	c.action do |global_options, options, args|
-
-		# Your command logic here
-
-		# If you have any errors, just raise them
-		# raise "that command made no sense"
+		raise 'Expected two locations' unless args.size == 2
 
 		connections = Transprt.connections(from: args.first, to: args.last).to_ostruct
 		connections.each_with_index do |c, i|
