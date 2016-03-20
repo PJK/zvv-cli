@@ -1,7 +1,7 @@
 require "zvv/cli/version"
 
 if ENV['ZVV_DEBUG']
-	require 'pry'
+	Bundler.require :development
 end
 
 module Zvv

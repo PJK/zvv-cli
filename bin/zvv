@@ -1,15 +1,26 @@
 #!/usr/bin/env ruby
 
-require "bundler/setup"
-require "zvv/cli"
-require 'gli'
-require 'transprt'
+require "rubygems"
+require "bundler"
+
+Bundler.require :runtime
+
 require 'ostruct'
 
 module Patches
 	refine String do
 		def strftime
 			DateTime.iso8601(self).strftime('%H:%M')
+		end
+
+		def subzh
+			gsub('Zürich', 'Zh').
+					gsub('Bahnhof', 'Bhf')
+		end
+
+		def subcon
+			tokens = split(' ')
+			tokens[0][-1] + ' ' + tokens[1]
 		end
 	end
 end
@@ -65,14 +76,18 @@ command :connection do |c|
 		# raise "that command made no sense"
 
 		connections = Transprt.connections(from: args.first, to: args.last).to_ostruct
-		connections.each do |c|
+		connections.each_with_index do |c, i|
 			#byebug
-			puts "%s %s ---> %s %s" % [c.from.station.name, c.from.departure.strftime, c.to.station.name, c.to.arrival.strftime]
+			puts ("%s %s ---> %s %s" % [c.from.station.name, c.from.departure.strftime, c.to.station.name, c.to.arrival.strftime]).subzh
 			c.sections.each do |s|
-				puts s.journey.name
-				puts s.journey.to
-				puts "%s %s ---> %s %s" % [s.departure.station.name, s.departure.departure.strftime, s.arrival.station.name, s.arrival.arrival.strftime]
+				if s.walk
+					puts ("Walk (%s) to %s" % [s.walk.duration, s.departure.station.name]).subzh.light_black
+				else
+					#puts s.inspect
+					puts ("%s %s -- %s --> %s %s" % [s.departure.station.name, s.departure.departure.strftime, s.journey.name.subcon, s.arrival.station.name, s.arrival.arrival.strftime]).subzh.light_black
+				end
 			end
+			puts unless i == connections.length - 1
 		end
 	end
 end

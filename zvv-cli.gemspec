@@ -32,9 +32,10 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "byebug"
   spec.add_development_dependency "pry-byebug"
+  spec.add_development_dependency "pry-rescue"
 
-	spec.add_dependency "gli"
 	# TODO fork & update
+	spec.add_dependency "gli"
 	spec.add_dependency "transprt"
 	spec.add_dependency "colorize"
 end
