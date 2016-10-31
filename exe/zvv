@@ -63,7 +63,7 @@ class App
 			c.action do |args, options|
 				time = args[2] || Time.now.to_s
 
-				isArrivalTime = time.start_with?('@') || time.end_with?('@') ? 1 : 0
+				isArrivalTime = time.start_with?('@') || time.end_with?('@') ? '1' : '0'
 				time = time.gsub('@', '')
 
 				time += ':00' unless time.include? ':'
@@ -71,7 +71,7 @@ class App
 				time += 24 * 60 ** 2 if time < Time.now # Look up tomorrow's connections
 
 
-				connections = Transprt.connections(
+				connections = Transprt::Client.new.connections(
 					from: args[0],
 					to: args[1],
 					date: time.strftime('%Y-%m-%d'),
