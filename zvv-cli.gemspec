@@ -15,7 +15,7 @@ Gem::Specification.new do |spec|
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
-  spec.bindir        = "bin"
+  spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
@@ -26,8 +26,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "pry-byebug"
   spec.add_development_dependency "pry-rescue"
 
-	# TODO fork & update
-	spec.add_dependency "commander"
-	spec.add_dependency "transprt"
-	spec.add_dependency "colorize"
+  # TODO fork & update
+  spec.add_dependency "commander"
+  spec.add_dependency "transprt"
+  spec.add_dependency "colorize"
 end
