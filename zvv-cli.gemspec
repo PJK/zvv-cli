@@ -28,6 +28,6 @@ Gem::Specification.new do |spec|
 
   # TODO fork & update
   spec.add_dependency "commander"
-  spec.add_dependency "transprt"
+  spec.add_dependency "transprt", "~> 0.2.2"
   spec.add_dependency "colorize"
 end
