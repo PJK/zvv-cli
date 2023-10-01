@@ -16,15 +16,6 @@ module Patches
 			DateTime.iso8601(self).strftime('%H:%M')
 		end
 
-		def subzh
-			gsub('Zürich', 'Zh').
-					gsub('Bahnhof', 'Bhf')
-		end
-
-		def subcon
-			tokens = split(' ')
-			tokens[0][-1] + ' ' + tokens[1]
-		end
 	end
 
 	refine Hash do
@@ -79,13 +70,16 @@ class App
 					isArrivalTime: isArrivalTime
 				)
 
+				# pp connections[0]
+
 				connections.to_ostruct.each_with_index do |c, i|
-					puts ("%s %s ---> %s %s" % [c.from.station.name, c.from.departure.strftime, c.to.station.name, c.to.arrival.strftime]).subzh
+					puts ("%s %s ---> %s %s" % [c.from.station.name, c.from.departure.strftime, c.to.station.name, c.to.arrival.strftime])
 					c.sections.each do |s|
+
 						if s.walk
-							puts ("Walk (%s) to %s" % [s.walk.duration, s.departure.station.name]).subzh.light_black
+							puts ("Walk (%sm) to %s" % [s.walk.duration, s.departure.station.name]).light_black
 						else
-							puts ("%s %s -- %s --> %s %s" % [s.departure.station.name, s.departure.departure.strftime, s.journey.name.subcon, s.arrival.station.name, s.arrival.arrival.strftime]).subzh.light_black
+							puts ("%s %s -- %s%s --> %s %s" % [s.departure.station.name, s.departure.departure.strftime, s.journey.category, s.journey.number, s.arrival.station.name, s.arrival.arrival.strftime]).light_black
 						end
 					end
 					puts unless i == connections.length - 1
