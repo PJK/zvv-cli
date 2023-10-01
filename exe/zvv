@@ -5,6 +5,7 @@ require 'rubygems'
 require 'commander'
 require 'transprt'
 require 'colorize'
+require 'debug'
 
 require 'zvv/cli'
 require 'ostruct'
@@ -15,7 +16,6 @@ module Patches
 		def strftime
 			DateTime.iso8601(self).strftime('%H:%M')
 		end
-
 	end
 
 	refine Hash do
@@ -73,13 +73,13 @@ class App
 				# pp connections[0]
 
 				connections.to_ostruct.each_with_index do |c, i|
-					puts ("%s %s ---> %s %s" % [c.from.station.name, c.from.departure.strftime, c.to.station.name, c.to.arrival.strftime])
+					duration_sec = (DateTime.iso8601(c.to.arrival).to_time - DateTime.iso8601(c.from.departure).to_time).to_int
+					puts ("%-20s %5s   %2d:%02d   %-20s %5s" % [c.from.station.name, c.from.departure.strftime, duration_sec / 60 ** 2, (duration_sec % 60 ** 2) / 60, c.to.station.name, c.to.arrival.strftime])
 					c.sections.each do |s|
-
 						if s.walk
 							puts ("Walk (%sm) to %s" % [s.walk.duration, s.departure.station.name]).light_black
 						else
-							puts ("%s %s -- %s%s --> %s %s" % [s.departure.station.name, s.departure.departure.strftime, s.journey.category, s.journey.number, s.arrival.station.name, s.arrival.arrival.strftime]).light_black
+							puts ("%-20s %5s   %2s%-3s   %-20s %5s" % [s.departure.station.name, s.departure.departure.strftime, s.journey.category, s.journey.number[0..2], s.arrival.station.name, s.arrival.arrival.strftime]).light_black
 						end
 					end
 					puts unless i == connections.length - 1
