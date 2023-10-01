@@ -2,3 +2,5 @@
 .ruby-version
 Gemfile.lock
 .byebug_history
+pkg
+.DS_Store
